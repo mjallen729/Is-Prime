@@ -35,6 +35,7 @@ export default class IsPrimeController {
         let user = req.query.user;
 
         try {
+            console.log(`Add ${num}`)
             db.addNum(num, isPrime, user);
             res.json({Number: num, IsPrime: isPrime, User: user});
 
@@ -53,13 +54,15 @@ export default class IsPrimeController {
             let cached = db.checkForNum(num, (reslt) => {
                 if (reslt.length >= 1) {
                     // if so: return the number's entry (row) from the sql DB
+                    console.log(`Found ${num}`);
                     res.json(reslt[0]);
 
                 } else {
                     // if not: call C binary and return result
                     exec(`./bin/is_prime ${num}`, (err, out, serr) => {
                         if (err) throw err;
-
+                        
+                        console.log(`New ${out}`);
                         res.json(JSON.parse(out));
 
                     });
