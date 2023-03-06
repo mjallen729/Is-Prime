@@ -18,7 +18,8 @@ export default class PrimeDB {
             });
 
             db.getConnection((err, conn) => {
-                // Create database called name
+                if (err) throw err;
+
                 let q = 'CREATE DATABASE IF NOT EXISTS primes;';
                 conn.query(q, (err, res) => {
                     if (err) throw err;
@@ -32,10 +33,10 @@ export default class PrimeDB {
                 // Create table for storing numbers
                 // Max length for Number is same length as max unsigned long long int
                 q = 'CREATE TABLE IF NOT EXISTS CheckedNumbers ';
-                q += '(Number varchar(19) NOT NULL PRIMARY KEY, ';
-                q += 'IsPrime varchar(5) NOT NULL, ';
+                q += '(Number varchar(25) NOT NULL PRIMARY KEY, ';
+                q += 'IsPrime varchar(8) NOT NULL, ';
                 q += 'DateAdded date NOT NULL, ';
-                q += 'User varchar(20) NOT NULL);';
+                q += 'User varchar(25) NOT NULL);';
                 conn.query(q, (err, res) => {
                     if (err) throw err;
                 });
@@ -80,7 +81,7 @@ export default class PrimeDB {
     }
 
     // Check database for entry corresponding to num
-    // num is a string
+    // num: str
     // Returns [RowDataPacket Object (list)]
     static async checkForNum(num, callback) {
         db.getConnection((err, conn) => {
@@ -98,8 +99,10 @@ export default class PrimeDB {
         });
     }
 
-    // Adds num to database
-    // num is a string
+    // Adds num to database if not exists
+    // num: str
+    // isPrime: str (true/false)
+    // user: str
     static async addNum(num, isPrime, user) {
         db.getConnection((err, conn) => {
             if (err) throw err;
@@ -109,9 +112,15 @@ export default class PrimeDB {
             let day = ((d.getDate() + 1).length == 1) ? `0${(d.getDate() + 1)}` : `${d.getDate() + 1}`;
             let date = `${d.getFullYear()}-0${d.getMonth()+1}-0${d.getDate()}`;
 
-            let q = `INSERT INTO CheckedNumbers VALUES ('${num}', '${isPrime}', '${date}', '${user}')`;
+            let q = `INSERT INTO CheckedNumbers VALUES ('${num}', '${isPrime}', '${date}', '${user}');`;
             conn.query(q, (err, res) => {
-                if (err && err.code != 'ER_DUP_ENTRY') {
+                if (err && err.code == 'ER_DUP_ENTRY') {
+                    console.log(`Error adding num: ${err}`);
+                    return;
+
+                }
+
+                if (err) {
                     throw err;
                 }
 
