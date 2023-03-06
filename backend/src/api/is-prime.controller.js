@@ -36,7 +36,7 @@ export default class IsPrimeController {
 
         try {
             db.addNum(num, isPrime, user);
-            res.json({status: 'success'});
+            res.json({Number: num, IsPrime: isPrime, User: user});
 
         } catch (e) {
             res.json({error: `${e}`});
