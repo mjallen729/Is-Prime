@@ -1,7 +1,9 @@
 import db from '../database.js'
+import {exec} from 'child_process'
 
 /*
-If num is a valid number it returns a formatted BigInt, else returns false
+If num is a valid number it returns a formatted string, else returns false
+num: str
 */
 function isValid(num) {
     num = num.replaceAll(',', '');
@@ -10,12 +12,13 @@ function isValid(num) {
     try {
         let large = BigInt(num);
 
-        if (large <= 2n || large > 18446744073709551615n || large % 1n != 0) {
-            throw new Error(`Invalid number: ${num}`);
+        if (large < 1n || large > 18446744073709551615n) {
+            console.log(`Invalid number: ${num}`);
+            return false;
 
         }
 
-        return large;
+        return num;
 
     } catch (e) {
         console.log(`Error parsing number: ${e}`);
@@ -24,36 +27,58 @@ function isValid(num) {
     }
 
 }
+
 export default class IsPrimeController {
+    static async add(req, res, next) {
+        let num = req.query.num;
+        let isPrime = req.query.prime;
+        let user = req.query.user;
+
+        try {
+            db.addNum(num, isPrime, user);
+            res.json({status: 'success'});
+
+        } catch (e) {
+            res.json({error: `${e}`});
+        }
+
+    }
+
     static async checkPrime(req, res, next) {
         // make sure num is a valid number (isValid function)
-        let num = isValid(req.params.n)
+        let num = isValid(req.params.num)
         
-        if (num != false) {
-            // access SQL DB to see if prime number has already been calculated
-            let cached = db.checkForNum(num.toString(), (reslt) => {
-                if (reslt.length == 1) {
+        if (num != false) {  // valid
+            // access SQL DB to see if number has already been calculated
+            let cached = db.checkForNum(num, (reslt) => {
+                if (reslt.length >= 1) {
                     // if so: return the number's entry (row) from the sql DB
                     res.json(reslt[0]);
 
                 } else {
-                    // if not: call C binary and return result and foundInDB= false; add to DB
+                    // if not: call C binary and return result
+                    exec(`./bin/is_prime ${num}`, (err, out, serr) => {
+                        if (err) throw err;
 
+                        res.json(JSON.parse(out));
+
+                    });
                 }
-
             });
         }
 
 
     }
+
 }
 
 function test() {
-    console.log(IsPrimeController.isValid('1 0  as  0 , 0 00 ,0 00'));
-    console.log(IsPrimeController.isValid('-10'));
-    console.log(IsPrimeController.isValid('1 0    0 , 0 00 ,0 00'));
-    console.log(IsPrimeController.isValid('100'));
-    console.log(IsPrimeController.isValid('1'));
+    console.log(isValid('1 0  as  0 , 0 00 ,0 00'));
+    console.log(isValid('-10'));
+    console.log(isValid('1 0    0 , 0 00 ,0 00'));
+    console.log(isValid('100'));
+    console.log(isValid('1'));
+    console.log(isValid('1.22343'));
 
 }
 //test();
