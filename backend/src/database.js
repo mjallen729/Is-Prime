@@ -82,7 +82,7 @@ export default class PrimeDB {
     // Check database for entry corresponding to num
     // num is a string
     // Returns [RowDataPacket Object (list)]
-    static async checkForNum(num, cb) {
+    static async checkForNum(num, callback) {
         db.getConnection((err, conn) => {
             if (err) throw err;
 
@@ -93,7 +93,7 @@ export default class PrimeDB {
             conn.query(q, function (err, rows) {
                 if (err) throw err;
                 
-                cb(rows);
+                callback(rows);
             });
         });
     }
