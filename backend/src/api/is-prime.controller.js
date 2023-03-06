@@ -33,7 +33,7 @@ export default class IsPrimeController {
             // access SQL DB to see if prime number has already been calculated
             let cached = db.checkForNum(num.toString(), (reslt) => {
                 if (reslt.length == 1) {
-                    // if so: return IsPrime value from the sql table
+                    // if so: return the number's entry (row) from the sql DB
                     res.json(reslt[0]);
 
                 } else {
