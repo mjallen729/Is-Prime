@@ -7,14 +7,17 @@ export default class IsPrimeController {
         
         if (num != false) {
             // access SQL DB to see if prime number has already been calculated
-            // if so: return the value from the sql table and foundInDB= true
-            // if not: call C binary and return result and foundInDB= false; add to DB
             let cached = db.checkForNum(num.toString(), (res) => {
                 result = res;
 
+                // if so: return IsPrime value from the sql table
                 if (result.length == 1) {
                     return res[0]['IsPrime'];
+                } else {
+                    // if not: call C binary and return result and foundInDB= false; add to DB
+
                 }
+                
             });
         }
 
