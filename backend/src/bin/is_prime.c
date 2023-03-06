@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
         primeb = "true";  // true
     }
 
-    printf("{\"Number\": \"%s\", \"IsPrime\": \"%s\", \"DateAdded\": \"null\", \"took\": %f}", argv[1], primeb, runtime);
+    printf("{\"Number\": \"%s\", \"IsPrime\": \"%s\", \"DateAdded\": \"null\", \"Took\": %f}", argv[1], primeb, runtime);
 
     return 0;
     
