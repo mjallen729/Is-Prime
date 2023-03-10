@@ -62,7 +62,7 @@ export default class IsPrimeController {
                     exec(`./bin/is_prime ${num}`, (err, out, serr) => {
                         if (err) throw err;
                         
-                        console.log(`New ${out}`);
+                        console.log(`New entry ${out}`);
                         res.json(JSON.parse(out));
 
                     });
