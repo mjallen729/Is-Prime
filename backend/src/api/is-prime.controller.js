@@ -1,5 +1,8 @@
 import db from '../database.js'
 import {exec} from 'child_process'
+import dotenv from 'dotenv'
+
+dotenv.config('../../.env');
 
 /*
 If num is a valid number it returns a formatted string, else returns false
@@ -30,9 +33,23 @@ function isValid(num) {
 
 export default class IsPrimeController {
     static async add(req, res, next) {
+        let key = req.headers.key;
+
+        if (key != process.env.APIKEY) {
+            res.json({ error: 'Invalid perms' });
+            console.log('ERR invalid perms');
+            return;
+        }
+        
         let num = req.query.num;
         let isPrime = req.query.prime;
         let user = req.query.user;
+
+        if (num == null || isPrime == null || user == null) {
+            res.json({error: 'Null params for add!'});
+            console.log('ERR null params for add');
+            return;
+        }
 
         try {
             console.log(`Add ${num}`)
@@ -46,8 +63,16 @@ export default class IsPrimeController {
     }
 
     static async checkPrime(req, res, next) {
+        let key = req.headers.key;
+
+        if (key != process.env.APIKEY) {
+            res.json({ error: 'Invalid perms' });
+            console.log('ERR invalid perms');
+            return;
+        }
+
         // make sure num is a valid number (isValid function)
-        let num = isValid(req.params.num)
+        let num = isValid(req.params.num);
         
         if (num != false) {  // valid
             // access SQL DB to see if number has already been calculated
