@@ -115,7 +115,7 @@ export default class PrimeDB {
             let q = `INSERT INTO CheckedNumbers VALUES ('${num}', '${isPrime}', '${date}', '${user}');`;
             conn.query(q, (err, res) => {
                 if (err && err.code == 'ER_DUP_ENTRY') {
-                    console.log(`Add failed: ${err}`);
+                    console.log(`Add failed ${err}`);
                     return;
 
                 }
