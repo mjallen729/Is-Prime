@@ -3,8 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config('../../.env');
 let url = 'localhost:5100';
-let header = {'Content-type': 'application/json',
-                'key': process.env.APIKEY};
+let header = {'key': process.env.APIKEY};
 
 class IsPrime {
     checkPrime(num) {
