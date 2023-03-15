@@ -1,6 +1,7 @@
 import db from '../database.js'
 import {exec} from 'child_process'
 import dotenv from 'dotenv'
+import path from 'node:path'
 
 dotenv.config('../../.env');
 
