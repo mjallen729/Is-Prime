@@ -87,6 +87,7 @@ export default class IsPrimeController {
 
                 } else {
                     // if not: call C binary and return result
+                    console.log(`Executable path: ${path.resolve('../bin/is_prime')}`);
                     exec(`../bin/is_prime ${num}`, (err, out, serr) => {
                         if (err) throw err;
                         
