@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 
 let db;
 dotenv.config({ path: '../.env' });
+let host = 'mysql-hu89';
 
 export default class PrimeDB {
     static async create() {
@@ -12,7 +13,7 @@ export default class PrimeDB {
             // Connect the MySQL database as root
             db = mysql.createPool({
                 connectionLimit: 1,
-                host: 'mysql-hu89',
+                host: host,
                 user: 'root',
                 password: process.env.DBAUTH
             });
@@ -66,7 +67,7 @@ export default class PrimeDB {
 
             db = mysql.createPool({
                 connectionLimit: 10,
-                host: 'mysql-hu89',
+                host: host,
                 user: 'main',
                 password: process.env.DBUSERAUTH,
                 database: 'primes'
