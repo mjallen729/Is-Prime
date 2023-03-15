@@ -1,27 +1,16 @@
-import fetch from 'node-fetch'
-import dotenv from 'dotenv'
-
-dotenv.config('../../.env');
-let url = 'localhost:5100';
-let header = {'key': process.env.APIKEY};
+import http from './httpcommon.js'
 
 class IsPrime {
-    checkPrime(num) {
-        return fetch(`${url}/api/num/${num}`, {
-            method: 'GET', 
-            headers: header
-        });
+    static checkPrime(num) {
+        return http.get(`/api/num/${num}`)
 
     }
 
-    addPrime(num, isPrime, user) {
-        return fetch(`${url}/api/add?num=${num}&prime=${isPrime}&user=${user}`, {
-            method: 'POST',
-            headers: header
-        });
+    static addPrime(num, isPrime, user) {
+        return http.post(`/api/add?num=${num}&prime=${isPrime}&user=${user}`)
 
     }
 
 }
 
-export default new IsPrime();
+export default IsPrime;
