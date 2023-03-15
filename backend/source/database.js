@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 
 let db;
 dotenv.config({ path: '../.env' });
-let host = 'mysql-hu89:3306';
+let host = 'mysql-hu89';
 
 export default class PrimeDB {
     static async create() {
