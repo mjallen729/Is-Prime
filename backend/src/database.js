@@ -12,7 +12,7 @@ export default class PrimeDB {
             // Connect the MySQL database as root
             db = mysql.createPool({
                 connectionLimit: 1,
-                host: 'localhost',
+                host: 'mysql-hu89',
                 user: 'root',
                 password: process.env.DBAUTH
             });
@@ -66,7 +66,7 @@ export default class PrimeDB {
 
             db = mysql.createPool({
                 connectionLimit: 10,
-                host: 'localhost',
+                host: 'mysql-hu89',
                 user: 'main',
                 password: process.env.DBUSERAUTH,
                 database: 'primes'
