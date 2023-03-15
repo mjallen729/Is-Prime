@@ -9,9 +9,6 @@ If num is a valid number it returns a formatted string, else returns false
 num: str
 */
 function isValid(num) {
-    num = num.replaceAll(',', '');
-    num = num.replaceAll(' ', '');
-
     try {
         let large = BigInt(num);
 
