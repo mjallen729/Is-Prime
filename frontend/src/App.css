@@ -2,6 +2,16 @@
     transition-duration: 0.4s;
 }
 
+#inputbox {
+    border: none;
+    border-radius: 9999px;
+    box-shadow: 0 0 0 3px #1D4ED8;
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 0 2.5px #1D4ED8;
+    outline: none;
+    transition: .1s;
+}
+
 #submitbutton:hover {
     background-color: #0C2C85;
 }
