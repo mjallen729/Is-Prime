@@ -108,9 +108,9 @@ export default class PrimeDB {
             if (err) throw err;
 
             const d = new Date();
-            let month = ((d.getMonth() + 1).length == 1) ? `0${(d.getMonth() + 1)}` : `${d.getMonth() + 1}`;
-            let day = ((d.getDate() + 1).length == 1) ? `0${(d.getDate() + 1)}` : `${d.getDate() + 1}`;
-            let date = `${d.getFullYear()}-0${d.getMonth()+1}-0${d.getDate()}`;
+            let month = ((d.getMonth() + 1).toString().length == 1) ? `0${d.getMonth() + 1}` : `${d.getMonth() + 1}`;
+            let day = (d.getDate().toString().length == 1) ? `0${d.getDate()}` : `${d.getDate()}`;
+            let date = `${d.getFullYear()}-${month}-${day}`;
 
             let q = `INSERT INTO CheckedNumbers VALUES ('${num}', '${isPrime}', '${date}', '${user}');`;
             conn.query(q, (err, res) => {
