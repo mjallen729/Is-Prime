@@ -54,7 +54,13 @@ export default class IsPrimeController {
         try {
             console.log(`Add ${num}`)
             db.addNum(num, isPrime, user);
-            res.json({Number: num, IsPrime: isPrime, User: user});
+
+            const d = new Date();
+            let month = ((d.getMonth() + 1).toString().length == 1) ? `0${d.getMonth() + 1}` : `${d.getMonth() + 1}`;
+            let day = (d.getDate().toString().length == 1) ? `0${d.getDate()}` : `${d.getDate()}`;
+            let date = `${d.getFullYear()}-${month}-${day}`;
+
+            res.json({Number: num, IsPrime: isPrime, DateAdded: date, User: user});
 
         } catch (e) {
             res.json({error: `${e}`});
@@ -93,6 +99,10 @@ export default class IsPrimeController {
                     });
                 }
             });
+
+        } else {
+            res.json({error: 'invalid num'});
+
         }
 
 
