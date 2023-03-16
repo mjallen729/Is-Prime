@@ -88,7 +88,7 @@ export default class IsPrimeController {
 
                 } else {
                     // if not: call C binary and return result
-                    exec(`/opt/render/project/src/backend/source/bin/is_prime ${num}`, (err, out, serr) => {
+                    exec(`/opt/render/project/src/backend/src/bin/is_prime ${num}`, (err, out, serr) => {
                         if (err) throw err;
                         
                         console.log(`Found new ${out}`);
