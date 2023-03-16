@@ -79,6 +79,7 @@ export default class IsPrimeController {
         let num = isValid(req.params.num);
         
         if (num != false) {  // valid
+            console.log(`Checking ${num}`)
             // access SQL DB to see if number has already been calculated
             let cached = db.checkForNum(num, (reslt) => {
                 if (reslt.length >= 1) {
@@ -100,6 +101,7 @@ export default class IsPrimeController {
 
         } else {
             res.json({error: 'invalid num'});
+            return;
 
         }
 
