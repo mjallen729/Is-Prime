@@ -89,10 +89,10 @@ export default class IsPrimeController {
 
                 } else {
                     // if not: call C binary and return result
-                    console.log(`Found new ${out}`);
                     exec(`/opt/render/project/src/backend/src/bin/is_prime ${num}`, (err, out, serr) => {
                         if (err) throw err;
-                        
+
+                        console.log(`Found new ${out}`);
                         res.json(JSON.parse(out));
 
                     });
