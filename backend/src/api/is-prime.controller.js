@@ -79,9 +79,9 @@ export default class IsPrimeController {
         let num = isValid(req.params.num);
         
         if (num != false) {  // valid
-            console.log(`Checking ${num}`)
             // access SQL DB to see if number has already been calculated
             let cached = db.checkForNum(num, (reslt) => {
+                console.log(`Checking ${num}`)
                 if (reslt.length >= 1) {
                     // if so: return the number's entry (row) from the sql DB
                     console.log(`Found ${num}`);
@@ -89,10 +89,10 @@ export default class IsPrimeController {
 
                 } else {
                     // if not: call C binary and return result
+                    console.log(`Found new ${out}`);
                     exec(`/opt/render/project/src/backend/src/bin/is_prime ${num}`, (err, out, serr) => {
                         if (err) throw err;
                         
-                        console.log(`Found new ${out}`);
                         res.json(JSON.parse(out));
 
                     });
