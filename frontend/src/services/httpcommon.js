@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL: 'localhost:5100',
+    baseURL: 'https://primality-test.onrender.com',
     headers: {
-        'key': '9y$B&E)H@McQeThW'
+        'key': 'pa#HFs!OK520tm@X3KCpN'
     }
 });
