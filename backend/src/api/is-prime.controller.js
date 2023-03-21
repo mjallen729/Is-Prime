@@ -89,7 +89,9 @@ export default class IsPrimeController {
 
                 } else {
                     // if not: call C binary and return result
-                    exec(`/opt/render/project/src/backend/src/bin/is_prime ${num}`, (err, out, serr) => {
+                    let p = path.join(__dirname, '..', 'bin', 'is_prime')
+
+                    exec(`${p} ${num}`, (err, out, serr) => {
                         if (err) throw err;
 
                         console.log(`Found new ${out}`);
