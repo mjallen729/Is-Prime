@@ -3,7 +3,7 @@ import isPrime from "../services/isPrime.js"
 //color for prime: #395B50
 //color for composite: #FE5E41
 
-const NumInfo = (props => {
+const NumInfo = (props) => {
     let num = props.num;
 
     const [resultColor, setResultColor] = useState('');
@@ -13,66 +13,69 @@ const NumInfo = (props => {
         return;
     }
 
-    console.log(isPrime.checkPrime(num));
-    let res = JSON.parse(isPrime.checkPrime(num));
+    let v = isPrime.checkPrime(num).then(response => {
+        return response.data;
 
-    if (res.error) {  // invalid number
-        return (<p className="text-xl">{res.error}</p>);
-    }
+    }).then(data => {
+        if (data.error) {  // invalid number
+            return (<p className="text-xl">{data.error}</p>);
+        }
 
-    let date = null;
-    let user = null;
+        let date = null;
+        let user = null;
 
-    if (res.DateAdded !== "null") {
-        // FOUND in DB
-        date = res.DateAdded.slice(0,10);
-        user = res.User;
+        if (data.DateAdded !== "null") {
+            // FOUND in DB
+            console.log(data);
+            date = data.DateAdded.slice(0, 10);
+            user = data.User;
 
-    } else if (res.DateAdded === "null") {
-        // NOT FOUND in DB
-        user = prompt('Congrats! You discovered a new number. Enter your name:');
+        } else if (data.DateAdded === "null") {
+            // NOT FOUND in DB
+            user = prompt('Congrats! You discovered a new number. Enter your name:');
 
-        if (user == null || user.length <= 2) {
-            alert('Invalid name, number not logged.');
-            return (<p className="text-xl text-red-600">Username error!</p>);
-            
+            if (user == null || user.length <= 2) {
+                alert('Invalid name, number not logged.');
+                return (<p className="text-xl text-red-600">Username error!</p>);
+
+            } else {
+                let res = isPrime.addPrime(data.Number, data.IsPrime, user).data;
+
+                date = res.DateAdded.slice(0, 10);
+                user = res.User;
+
+            }
+
         } else {
-            res = JSON.parse(isPrime.addPrime(res.Number, res.IsPrime, user));
-
-            date = res.DateAdded.slice(0, 10);
-            user = res.User;
+            return (<p className="text-xl text-red-600">Unknown error!</p>);
 
         }
 
-    } else {
-        return (<p className="text-xl text-red-600">Unknown error!</p>);
+        if (data.IsPrime === "true") {
+            setResultColor('395B50');
+            setResult('PRIME');
 
-    }
+        } else if (data.IsPrime === "false") {
+            setResultColor('FE5E41');
+            setResult('COMPOSITE');
 
-    if (res.IsPrime === "true") {
-        setResultColor('395B50');
-        setResult('PRIME');
+        }
 
-    } else if (res.IsPrime === "false") {
-        setResultColor('FE5E41');
-        setResult('COMPOSITE');
-
-    }
-
-    return (
-        <div id="infocontent">
-            <p className="text-2xl">{res.Number}</p>
-            <br />
-            <p className="text-xl">
-                <span className={`text-[#${resultColor}]`}>{result}</span>
+        return (
+            <div id="infocontent">
+                <p className="text-2xl">{data.Number}</p>
                 <br />
-                <span>Found By: {user}</span>
-                <br />
-                <span>Date: {date}</span>
-            </p>
-        </div>
-    );
+                <p className="text-xl">
+                    <span className={`text-[#${resultColor}]`}>{result}</span>
+                    <br />
+                    <span>Found By: {user}</span>
+                    <br />
+                    <span>Date: {date}</span>
+                </p>
+            </div>
+        );
+    })
 
-});
+}
 
 export default NumInfo;
