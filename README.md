@@ -1,2 +1,2 @@
 # Is-Prime
-Uses Node, React, MySQL, and Express to determine if a number is prime. Primality check algorithm written in C.
+Currently in the process of making the front end (took a small break to do some leetcode will be back shortly).
