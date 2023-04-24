@@ -18,17 +18,85 @@ function App() {
         }
     }
 
+    let lock = false; // make sure render cannot be spammed
     function render() {
+        if (lock || curInput.length < 1) {
+            return;
+        }
+        lock = true;
         //call api and setResult to response JSON
-        // use isPrime import
-        // make sure to replace NumInfo component
+        //result state is passed to NumInfo component for rendering
         let c = isPrime.checkPrime(curInput).then(response => {
             return response.data;
 
         }).then(data => {
+            let content = {
+                num: null,
+                result: null,  // prime or composite
+                date: null,
+                user: null,
+                error: null  // if there's an error this will exist
+            }
+
+            if (data.error) {  // invalid number
+                // set result to error
+                content['error'] = data.error;
+                return;
+
+            }
+
+            if (data.DateAdded !== "null") {
+                // number found in DB (already exists)
+                console.log(data);
+                content['date'] = data.DateAdded.slice(0, 10);
+                content['user'] = data.User;
+                content['num'] = data.Number;
+
+                if (data.IsPrime === "true") {
+                    content['result'] = 'prime';
+
+                }
+
+                if (data.isPrime === "false") {
+                    content['result'] = 'composite';
+
+                }
+
+                return;
+
+            } else if (data.DateAdded === "null") {
+                // NOT FOUND in DB (does not exist)
+                content['user'] = prompt('Congrats! You discovered a new number. Enter your name:');
+
+                if (user == null || user.length <= 2) {
+                    alert('Invalid name, number not logged.');
+                    content['error'] = 'Username error';
+                    return;
+
+                } else {
+                    let res = isPrime.addPrime(data.Number, data.IsPrime, content['user']).then(response => {
+                        return response.data;
+
+                    }).then(dat => {
+                        content['date'] = dat.DateAdded.slice(0,10);
+                        content['user'] = dat.User;
+                        content['num'] = data.Number;
+                        return;
+
+                    })
+
+                }
+
+            } else {
+                content['error'] = 'Unknown error';
+                return;
+
+            }
 
         })
 
+        setResult(content);
+        lock = false;
     }
 
     return (
