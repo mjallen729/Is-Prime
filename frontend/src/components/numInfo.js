@@ -10,14 +10,14 @@ const NumInfo = (props) => {
         }
 
         if (props.result === 'prime') {
-            setResultColor('395B50');
+            setResultColor('0dbf55');
             setResult('PRIME');
 
         } else if (props.result === 'composite') {
             setResultColor('FE5E41');
             setResult('COMPOSITE');
         }
-    }, [props.error, props.result]);
+    }, [props.error, props.result, props.user]);
 
     if (props.error) {
         return (
