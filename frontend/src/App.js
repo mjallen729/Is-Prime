@@ -13,18 +13,12 @@ function App() {
 
     const keyPressEvent = (event) => {
         if (event.key === 'Enter') {
-            console.log('ENTER');  //press the check button!
+            console.log('ENTER');  //TODO press the check button!
         }
     }
 
-    function saveValue(e) {
-
-        setCurInput(e.target.value)
-
-    }
-
     function render() {
-        setResult(curInput);
+        setResult(curInput); //TODO call api and setResult to response JSON
 
     }
 
@@ -43,7 +37,7 @@ function App() {
                     onFocus={(e) => {setInputVal(''); e.target.value = '';}}
                     onBlur={resetInput}
                     onKeyDown={keyPressEvent}
-                    onChange={e => saveValue(e)}
+                    onChange={e => setCurInput(e)}
                     className="w-[300px] md:w-[450px] h-[55px] text-2xl md:text-3xl text-center" maxLength="20"
                 />
 
