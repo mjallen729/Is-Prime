@@ -22,7 +22,7 @@ function isValid(num) {
         return num;
 
     } catch (e) {
-        console.log(`Error parsing number: ${e}`);
+        console.log(`Error parsing number ${num}: ${e}`);
         return false;
 
     }
