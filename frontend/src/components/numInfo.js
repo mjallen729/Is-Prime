@@ -12,7 +12,7 @@ const NumInfo = (props) => {
         if (props.result === 'prime') {
             setResultColor('395B50');
             setResult('PRIME');
-            
+
         } else if (props.result === 'composite') {
             setResultColor('FE5E41');
             setResult('COMPOSITE');
@@ -32,7 +32,7 @@ const NumInfo = (props) => {
             <p className="text-3xl">{props.num}</p>
             <br /><br/>
             <p className="text-2xl">
-                <span className={`text-[#${resultColor}]`}>{result}</span>
+                <span style={{color: `#${resultColor}`, fontWeight: "bold"}}>{result}</span>
                 <br /><br/>
                 <span>Found By: {props.user}</span>
                 <br />
