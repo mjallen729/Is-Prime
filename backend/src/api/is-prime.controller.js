@@ -1,7 +1,8 @@
-import db from '../database.js'
-import {exec} from 'child_process'
-import dotenv from 'dotenv'
-import path from 'path'
+import db from '../database.js';
+import {exec} from 'child_process';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config('../../.env');
 
@@ -89,6 +90,9 @@ export default class IsPrimeController {
 
                 } else {
                     // if not: call C binary and return result
+                    const __filename = fileURLToPath(import.meta.url);
+                    const __dirname = path.dirname(__filename);
+
                     let p = path.join(__dirname, '..', 'bin', 'is_prime')
 
                     exec(`${p} ${num}`, (err, out, serr) => {
