@@ -1,6 +1,7 @@
 import './App.css';
 import {useState} from "react"
 import NumInfo from './components/NumInfo.js';
+import isPrime from "../services/isPrime.js";
 
 function App() {
     const [inputVal, setInputVal] = useState('Enter a number...');
@@ -13,12 +14,20 @@ function App() {
 
     const keyPressEvent = (event) => {
         if (event.key === 'Enter') {
-            console.log('ENTER');  //TODO press the check button!
+            console.log('ENTER');  //TODO press the check button
         }
     }
 
     function render() {
-        setResult(curInput); //TODO call api and setResult to response JSON
+        //call api and setResult to response JSON
+        // use isPrime import
+        // make sure to replace NumInfo component
+        let c = isPrime.checkPrime(curInput).then(response => {
+            return response.data;
+
+        }).then(data => {
+
+        })
 
     }
 

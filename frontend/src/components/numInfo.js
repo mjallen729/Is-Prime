@@ -1,5 +1,4 @@
 import { useState } from "react"
-import isPrime from "../services/isPrime.js"
 //color for prime: #395B50
 //color for composite: #FE5E41
 
