@@ -1,87 +1,96 @@
 import './App.css';
 import {useState} from "react"
 import NumInfo from './components/NumInfo.js';
-import isPrime from "../services/isPrime.js";
+import isPrime from "./services/isPrime.js";
 
 function App() {
     const [inputVal, setInputVal] = useState('Enter a number...');
     const [curInput, setCurInput] = useState('');
-    const [result, setResult] = useState('');
+    const [result, setResult] = useState({
+        num: null,
+        result: null,
+        date: null,
+        user: null,
+        error: null
+    });
 
     function resetInput() {
         setInputVal('Enter a number...');
     }
 
-    const keyPressEvent = (event) => {
-        if (event.key === 'Enter') {
-            console.log('ENTER');  //TODO press the check button
-        }
-    }
+    const handleInputChange = (event) => {
+        setCurInput(event.target.value);
+    };
 
     let lock = false; // make sure render cannot be spammed
     function render() {
+        //call api and setResult to response JSON
+        //result state is passed to NumInfo component for rendering
         if (lock || curInput.length < 1) {
+            console.log('oof')
             return;
         }
         lock = true;
-        //call api and setResult to response JSON
-        //result state is passed to NumInfo component for rendering
-        let c = isPrime.checkPrime(curInput).then(response => {
+
+        let content = {
+            num: null,
+            result: null,  // prime or composite
+            date: null,
+            user: null,
+            error: null  // if there's an error this will exist
+        }
+        
+        isPrime.checkPrime(curInput).then(response => {
             return response.data;
 
         }).then(data => {
-            let content = {
-                num: null,
-                result: null,  // prime or composite
-                date: null,
-                user: null,
-                error: null  // if there's an error this will exist
-            }
-
             if (data.error) {  // invalid number
                 // set result to error
                 content['error'] = data.error;
-                return;
 
-            }
-
-            if (data.DateAdded !== "null") {
+            } else if (data.DateAdded !== "null") {
                 // number found in DB (already exists)
                 console.log(data);
                 content['date'] = data.DateAdded.slice(0, 10);
                 content['user'] = data.User;
                 content['num'] = data.Number;
 
-                if (data.IsPrime === "true") {
+                if (data.IsPrime === 'true') {
                     content['result'] = 'prime';
 
                 }
 
-                if (data.isPrime === "false") {
+                if (data.IsPrime === 'false') {
                     content['result'] = 'composite';
 
                 }
 
-                return;
-
             } else if (data.DateAdded === "null") {
                 // NOT FOUND in DB (does not exist)
-                content['user'] = prompt('Congrats! You discovered a new number. Enter your name:');
+                let user = prompt('Congrats! You discovered a new number. Enter your name:');
 
                 if (user == null || user.length <= 2) {
                     alert('Invalid name, number not logged.');
                     content['error'] = 'Username error';
-                    return;
 
                 } else {
-                    let res = isPrime.addPrime(data.Number, data.IsPrime, content['user']).then(response => {
+                    isPrime.addPrime(data.Number, data.IsPrime, user).then(response => {
                         return response.data;
 
                     }).then(dat => {
                         content['date'] = dat.DateAdded.slice(0,10);
                         content['user'] = dat.User;
                         content['num'] = data.Number;
-                        return;
+
+                        if (dat.IsPrime === 'true') {
+                            content['result'] = 'prime';
+
+                        }
+
+                        if (dat.IsPrime === 'false') {
+                            content['result'] = 'composite';
+
+                        }
 
                     })
 
@@ -89,14 +98,25 @@ function App() {
 
             } else {
                 content['error'] = 'Unknown error';
-                return;
 
             }
 
-        })
+            setResult({
+                num: content.num,
+                result: content.result,
+                date: content.date,
+                user: content.user,
+                error: content.error
+            });
 
-        setResult(content);
-        lock = false;
+            lock = false;
+        })
+    }
+
+    const keyPressEvent = (event) => {
+        if (event.key === 'Enter') {
+            render()
+        }
     }
 
     return (
@@ -114,7 +134,7 @@ function App() {
                     onFocus={(e) => {setInputVal(''); e.target.value = '';}}
                     onBlur={resetInput}
                     onKeyDown={keyPressEvent}
-                    onChange={e => setCurInput(e)}
+                    onChange={handleInputChange}
                     className="w-[300px] md:w-[450px] h-[55px] text-2xl md:text-3xl text-center" maxLength="20"
                 />
 
@@ -125,8 +145,8 @@ function App() {
                         Check!
                 </button>
 
-                <div id="infobox" className="w-[325px] md:w-[450px] mt-[80px] text-center">
-                    <NumInfo num={result} />
+                <div id="infobox" className="w-[325px] md:w-[450px] mt-[50px] text-center">
+                    <NumInfo {...result} />
                 </div>
 
             </div>
