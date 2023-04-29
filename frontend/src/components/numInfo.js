@@ -22,7 +22,7 @@ const NumInfo = (props) => {
     if (props.error) {
         return (
             <div id="infocontent">
-                <p className="text-2xl">{props.error}</p>
+                <p className="text-2xl text-red-700">{props.error}</p>
             </div>
         );
     }
