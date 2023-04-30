@@ -69,7 +69,7 @@ export default class IsPrimeController {
     }
 
     static async checkPrime(req, res, next) {
-        console.log(`Recv_check ${num}`);
+        console.log(`Recv_check ${req.params.num}`);
         let key = req.headers.key;
 
         if (key != process.env.APIKEY) {
