@@ -85,7 +85,7 @@ export default class IsPrimeController {
         if (num != false) {  // valid
             // access SQL DB to see if number has already been calculated
             let cached = db.checkForNum(num, (reslt) => {
-                console.log(`Checking ${num}`)
+                console.log(`Checked DB`)
                 if (reslt.length >= 1) {
                     // if so: return the number's entry (row) from the sql DB
                     console.log(`Found ${num}`);
