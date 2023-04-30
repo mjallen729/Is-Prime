@@ -80,7 +80,7 @@ export default class IsPrimeController {
 
         // make sure num is a valid number (isValid function)
         let num = isValid(req.params.num);
-        console.log('Checked valid');
+        console.log('Ran isValid');
         
         if (num != false) {  // valid
             // access SQL DB to see if number has already been calculated
