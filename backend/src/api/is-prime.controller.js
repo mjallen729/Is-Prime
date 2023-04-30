@@ -53,6 +53,7 @@ export default class IsPrimeController {
         try {
             console.log(`Add ${num}`)
             db.addNum(num, isPrime, user);
+            console.log('Added');
 
             const d = new Date();
             let month = ((d.getMonth() + 1).toString().length == 1) ? `0${d.getMonth() + 1}` : `${d.getMonth() + 1}`;
@@ -68,6 +69,7 @@ export default class IsPrimeController {
     }
 
     static async checkPrime(req, res, next) {
+        console.log(`Recv_check ${num}`);
         let key = req.headers.key;
 
         if (key != process.env.APIKEY) {
@@ -78,6 +80,7 @@ export default class IsPrimeController {
 
         // make sure num is a valid number (isValid function)
         let num = isValid(req.params.num);
+        console.log('Checked valid');
         
         if (num != false) {  // valid
             // access SQL DB to see if number has already been calculated
@@ -89,6 +92,7 @@ export default class IsPrimeController {
                     res.json(reslt[0]);
 
                 } else {
+                    console.log(`Not fnd ${num}`)
                     // if not: call C binary and return result
                     const __filename = fileURLToPath(import.meta.url);
                     const __dirname = path.dirname(__filename);
