@@ -64,7 +64,7 @@ export default class PrimeDB {
                 });
 
                 console.log('DB connected');
-                conn.release();
+                if (conn) conn.release();
 
             });
 
@@ -107,7 +107,7 @@ export default class PrimeDB {
                 callback(rows);
             });
 
-            conn.release();
+            if (conn) conn.release();
 
         });
     }
@@ -139,8 +139,8 @@ export default class PrimeDB {
 
             });
 
-            conn.release();
-            
+            if (conn) conn.release();
+
         });
     }
 
