@@ -89,7 +89,10 @@ export default class PrimeDB {
     static async checkForNum(num, callback) {
         console.log('DB: get conn...');
         db.getConnection((err, conn) => {
-            if (err) throw err;
+            if (err) {
+                console.log(`DB err: ${err}`)
+                throw err;
+            }
 
             console.log('DB: send query...');
             conn.query('USE primes;');
