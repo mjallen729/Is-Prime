@@ -98,7 +98,7 @@ export default class PrimeDB {
             conn.query(q, function (err, rows) {
                 if (err) throw err;
                 
-                console.log(`DB: got ${rows.length}`);
+                console.log(`DB: got len ${rows.length}`);
                 callback(rows);
             });
         });
