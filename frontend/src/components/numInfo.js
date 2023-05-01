@@ -17,7 +17,7 @@ const NumInfo = (props) => {
             setResultColor('FE5E41');
             setResult('COMPOSITE');
         }
-    }, [props.error, props.result, props.user]);
+    }, [props.error, props.result, props.date]);
 
     if (props.error) {
         return (
