@@ -20,7 +20,6 @@ export default class PrimeDB {
 
             db.getConnection((err, conn) => {
                 if (err) throw err;
-                console.log('got connect');
 
                 let q = 'CREATE DATABASE IF NOT EXISTS primes;';
                 conn.query(q, (err, res) => {
@@ -63,6 +62,8 @@ export default class PrimeDB {
                 conn.query('flush privileges;', (err, res) => {
                     if (err) throw err;
                 });
+
+                console.log('DB connected');
 
             });
 
