@@ -25,7 +25,7 @@ function App() {
     let lock = false; // make sure render cannot be spammed
     function render() {
         //call api and setResult to response JSON
-        //result state is passed to NumInfo component for rendering
+        //result state is passed to Num`Info component for rendering
         if (lock || curInput.length < 1) {
             console.log('oof')
             return;
